@@ -1,1 +1,24 @@
-# Cleverbot.py - an API for Cleverbot in Python
+Cleverbot.py - an API for Cleverbot in Python
+=============================================
+
+Comments/pull requests/feedback welcome!
+
+Usage
+-----
+
+Taken from cleverbot/cleverbot.py:150-161
+
+```
+>>> if __name__ == "__main__":
+    cb1 = Cleverbot()
+    cb2 = Cleverbot()
+
+    resp1 = cb1.ask("Hello.")
+    print "Bob:", "Hello"
+
+    while True:
+        print "Alice:", resp1
+        resp2 = cb2.ask(resp1)
+        print "Bob:", resp2
+        resp1 = cb1.ask(resp2)
+```
