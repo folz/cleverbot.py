@@ -112,7 +112,7 @@ class Cleverbot:
 
         # Generate the token
         enc_data = urllib.urlencode(self.data)
-        digest_txt = enc_data[9:29]
+        digest_txt = enc_data[9:35]
         token = md5(digest_txt).hexdigest()
         self.data['icognocheck'] = token
 
