@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name = 'cleverbot',
     packages = ['cleverbot'],
-    version = '0.1.2',
+    version = '0.1.3',
     author = 'Rodney Folz',
     author_email = 'folz@rodneyfolz.com',
     url = 'https://github.com/folz/cleverbot.py',
