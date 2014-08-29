@@ -6,6 +6,9 @@ Comments/pull requests/feedback welcome!
 Usage
 -----
 
->>> import cleverbot
->>> cb1 = cleverbot.Cleverbot()
->>> print cb1.ask('Hi. How are you?")
+```
+import cleverbot
+
+cb1 = cleverbot.Cleverbot()
+ print cb1.ask('Hi. How are you?")
+```
