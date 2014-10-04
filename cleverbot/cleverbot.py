@@ -133,10 +133,13 @@ class Cleverbot:
         parsed = [
             item.split('\r') for item in self.resp.split('\r\r\r\r\r\r')[:-1]
         ]
-
-        return {
+        parsed_dict = {
             'answer': parsed[0][0],
             'conversation_id': parsed[0][1],
             'conversation_log_id': parsed[0][2],
-            'unknown': parsed[1][-1]
         }
+        try:
+            parsed_dict['unknown'] = parsed[1][-1]
+        except IndexError:
+            parsed_dict['unknown'] = None
+        return parsed_dict
