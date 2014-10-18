@@ -7,7 +7,7 @@ class Cleverbot(unittest.TestCase):
     def test_replay(self):
         cbc = cleverbot.Cleverbot()
         response = cbc.ask("Hi. How are you?")
-        self.assertNotEquals(result, str())
+        self.assertNotEquals(response, str())
 
 
 def main():
