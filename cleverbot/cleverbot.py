@@ -1,4 +1,5 @@
 """Python library allowing interaction with the Cleverbot API."""
+import cookielib
 import hashlib
 import urllib
 import urllib2
@@ -58,11 +59,29 @@ class Cleverbot:
         self.conversation = []
         self.resp = str()
 
+        # install an opener with support for cookies
+        cookies = cookielib.LWPCookieJar()
+        handlers = [
+            urllib2.HTTPHandler(),
+            urllib2.HTTPSHandler(),
+            urllib2.HTTPCookieProcessor(cookies)
+        ]
+        opener = urllib2.build_opener(*handlers)
+        urllib2.install_opener(opener)
+
+        # get the main page to get a cookie (see bug  #13)
+        try:
+            urllib2.urlopen(Cleverbot.PROTOCOL + Cleverbot.HOST)
+        except urllib2.HTTPError:
+            # TODO errors shouldn't pass unnoticed, 
+            # here and in other places as well
+            return str()
+
     def ask(self, question):
         """Asks Cleverbot a question.
         
         Maintains message history.
-
+                                 
         Args:
             q (str): The question to ask
 
