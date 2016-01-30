@@ -1,11 +1,15 @@
 """Python library allowing interaction with the Cleverbot API."""
-import cookielib
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
+import http.cookiejar
 import hashlib
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 
-class Cleverbot:
+class Cleverbot(object):
     """
     Wrapper over the Cleverbot API.
 
@@ -60,19 +64,19 @@ class Cleverbot:
         self.resp = str()
 
         # install an opener with support for cookies
-        cookies = cookielib.LWPCookieJar()
+        cookies = http.cookiejar.LWPCookieJar()
         handlers = [
-            urllib2.HTTPHandler(),
-            urllib2.HTTPSHandler(),
-            urllib2.HTTPCookieProcessor(cookies)
+            urllib.request.HTTPHandler(),
+            urllib.request.HTTPSHandler(),
+            urllib.request.HTTPCookieProcessor(cookies)
         ]
-        opener = urllib2.build_opener(*handlers)
-        urllib2.install_opener(opener)
+        opener = urllib.request.build_opener(*handlers)
+        urllib.request.install_opener(opener)
 
         # get the main page to get a cookie (see bug  #13)
         try:
-            urllib2.urlopen(Cleverbot.PROTOCOL + Cleverbot.HOST)
-        except urllib2.HTTPError:
+            urllib.request.urlopen(Cleverbot.PROTOCOL + Cleverbot.HOST)
+        except urllib.error.HTTPError:
             # TODO errors shouldn't pass unnoticed, 
             # here and in other places as well
             return str()
@@ -94,7 +98,7 @@ class Cleverbot:
         # Connect to Cleverbot's API and remember the response
         try:
             self.resp = self._send()
-        except urllib2.HTTPError:
+        except urllib.error.HTTPError:
             # request failed. returning empty string
             return str()
 
@@ -131,17 +135,17 @@ class Cleverbot:
                     break
 
         # Generate the token
-        enc_data = urllib.urlencode(self.data)
+        enc_data = urllib.parse.urlencode(self.data)
         digest_txt = enc_data[9:35]
         token = hashlib.md5(digest_txt).hexdigest()
         self.data['icognocheck'] = token
 
         # Add the token to the data
-        enc_data = urllib.urlencode(self.data)
-        req = urllib2.Request(self.API_URL, enc_data, self.headers)
+        enc_data = urllib.parse.urlencode(self.data)
+        req = urllib.request.Request(self.API_URL, enc_data, self.headers)
 
         # POST the data to Cleverbot's API
-        conn = urllib2.urlopen(req)
+        conn = urllib.request.urlopen(req)
         resp = conn.read()
 
         # Return Cleverbot's response
