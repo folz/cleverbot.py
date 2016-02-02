@@ -133,6 +133,10 @@ class Cleverbot(object):
         parsed = [
             item.split('\r') for item in resp_text.split('\r\r\r\r\r\r')[:-1]
             ]
+
+        if parsed[0][1] == 'DENIED':
+            raise CleverbotAPIError()
+
         parsed_dict = {
             'answer': parsed[0][0],
             'conversation_id': parsed[0][1],
@@ -143,3 +147,7 @@ class Cleverbot(object):
         except IndexError:
             parsed_dict['unknown'] = None
         return parsed_dict
+
+
+class CleverbotAPIError(Exception):
+    """Cleverbot returned an error (it probably recognized us as a bot)"""
