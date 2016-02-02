@@ -1,5 +1,7 @@
 language: python
+python:
+  - "3.4"
 
-install: pip install .
+install: pip install tox
 
-script: python tests/runtests.py
+script: tox
