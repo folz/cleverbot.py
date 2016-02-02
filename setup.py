@@ -5,6 +5,7 @@ setup(
     version = '0.2.0',
     packages = ['cleverbot'],
     install_requires = ['future', 'requests'],
+    tests_require = ['pytest'],
     author = 'Rodney Folz',
     author_email = 'folz@rodneyfolz.com',
     url = 'https://github.com/folz/cleverbot.py',
