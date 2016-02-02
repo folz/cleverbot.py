@@ -2,4 +2,4 @@ language: python
 
 install: pip install .
 
-script: python tests/runtests.py
+script: tox
