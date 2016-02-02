@@ -2,8 +2,9 @@ from distutils.core import setup
 
 setup(
     name = 'cleverbot',
+    version = '0.2.0',
     packages = ['cleverbot'],
-    version = '0.1.5',
+    install_requires = ['future', 'requests'],
     author = 'Rodney Folz',
     author_email = 'folz@rodneyfolz.com',
     url = 'https://github.com/folz/cleverbot.py',

@@ -1,12 +1,12 @@
 """Python library allowing interaction with the Cleverbot API."""
-from future import standard_library
-standard_library.install_aliases()
-from builtins import str
-from builtins import object
-import http.cookiejar
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from builtins import str  # pylint: disable=redefined-builtin
+from builtins import object  # pylint: disable=redefined-builtin
+
 import hashlib
-import urllib.request, urllib.parse, urllib.error
-import urllib.request, urllib.error, urllib.parse
+import requests
+from requests.compat import urlencode
 
 
 class Cleverbot(object):
@@ -61,51 +61,30 @@ class Cleverbot(object):
 
         # the log of our conversation with Cleverbot
         self.conversation = []
-        self.resp = str()
 
-        # install an opener with support for cookies
-        cookies = http.cookiejar.LWPCookieJar()
-        handlers = [
-            urllib.request.HTTPHandler(),
-            urllib.request.HTTPSHandler(),
-            urllib.request.HTTPCookieProcessor(cookies)
-        ]
-        opener = urllib.request.build_opener(*handlers)
-        urllib.request.install_opener(opener)
-
-        # get the main page to get a cookie (see bug  #13)
-        try:
-            urllib.request.urlopen(Cleverbot.PROTOCOL + Cleverbot.HOST)
-        except urllib.error.HTTPError:
-            # TODO errors shouldn't pass unnoticed, 
-            # here and in other places as well
-            return str()
+        # get the main page to get a cookie (see bug #13)
+        self.session = requests.Session()
+        self.session.get(Cleverbot.PROTOCOL + Cleverbot.HOST)
 
     def ask(self, question):
         """Asks Cleverbot a question.
-        
-        Maintains message history.
-                                 
-        Args:
-            q (str): The question to ask
 
-        Returns:
-            Cleverbot's answer
+        Maintains message history.
+
+        :param question: The question to ask
+        :return Cleverbot's answer
         """
+
         # Set the current question
         self.data['stimulus'] = question
 
         # Connect to Cleverbot's API and remember the response
-        try:
-            self.resp = self._send()
-        except urllib.error.HTTPError:
-            # request failed. returning empty string
-            return str()
+        resp = self._send()
 
         # Add the current question to the conversation log
         self.conversation.append(question)
 
-        parsed = self._parse()
+        parsed = self._parse(resp.text)
 
         # Set data as appropriate
         if self.data['sessionid'] != '':
@@ -117,13 +96,16 @@ class Cleverbot(object):
         return parsed['answer']
 
     def _send(self):
-        """POST the user's question and all required information to the 
+        """POST the user's question and all required information to the
         Cleverbot API
 
         Cleverbot tries to prevent unauthorized access to its API by
-        obfuscating how it generates the 'icognocheck' token, so we have
-        to URLencode the data twice: once to generate the token, and
-        twice to add the token to the data we're sending to Cleverbot.
+        obfuscating how it generates the 'icognocheck' token. The token is
+        currently the md5 checksum of the 10th through 36th characters of the
+        encoded data. This may change in the future.
+
+        TODO: Order is not guaranteed when urlencoding dicts. This hasn't been
+        a problem yet, but let's look into ordered dicts or tuples instead.
         """
         # Set data as appropriate
         if self.conversation:
@@ -135,27 +117,22 @@ class Cleverbot(object):
                     break
 
         # Generate the token
-        enc_data = urllib.parse.urlencode(self.data)
+        enc_data = urlencode(self.data)
         digest_txt = enc_data[9:35]
-        token = hashlib.md5(digest_txt).hexdigest()
+        token = hashlib.md5(digest_txt.encode('utf-8')).hexdigest()
         self.data['icognocheck'] = token
 
-        # Add the token to the data
-        enc_data = urllib.parse.urlencode(self.data)
-        req = urllib.request.Request(self.API_URL, enc_data, self.headers)
+        # POST the data to Cleverbot's API and return
+        return self.session.post(Cleverbot.API_URL,
+                                 data=self.data,
+                                 headers=Cleverbot.headers)
 
-        # POST the data to Cleverbot's API
-        conn = urllib.request.urlopen(req)
-        resp = conn.read()
-
-        # Return Cleverbot's response
-        return resp
-
-    def _parse(self):
+    @staticmethod
+    def _parse(resp_text):
         """Parses Cleverbot's response"""
         parsed = [
-            item.split('\r') for item in self.resp.split('\r\r\r\r\r\r')[:-1]
-        ]
+            item.split('\r') for item in resp_text.split('\r\r\r\r\r\r')[:-1]
+            ]
         parsed_dict = {
             'answer': parsed[0][0],
             'conversation_id': parsed[0][1],
