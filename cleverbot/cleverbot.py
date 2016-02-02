@@ -7,6 +7,11 @@ from builtins import object  # pylint: disable=redefined-builtin
 import hashlib
 import requests
 from requests.compat import urlencode
+from future.backports.html import parser
+
+# Only use the instance method `unescape` of entity_parser. (I wish it was a
+# static method or public function; it never uses `self` anyway)
+entity_parser = parser.HTMLParser()
 
 
 class Cleverbot(object):
@@ -130,6 +135,8 @@ class Cleverbot(object):
     @staticmethod
     def _parse(resp_text):
         """Parses Cleverbot's response"""
+        resp_text = entity_parser.unescape(resp_text)
+
         parsed = [
             item.split('\r') for item in resp_text.split('\r\r\r\r\r\r')[:-1]
             ]
