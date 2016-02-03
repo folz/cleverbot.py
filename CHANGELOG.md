@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.1
+
+* Enhancement
+  * Add Python 3 language classifier to setup.py
+
 ## v0.2.0
 
 * Enhancement
