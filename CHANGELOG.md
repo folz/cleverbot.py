@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.9.0
+
+* Enhancement
+  * Update documentation to prepare for a 1.0.0 release.
+  * Improved classifiers and metadata in setup.py.
+  * Python 3.5 support.
+
 ## v0.2.1
 
 * Enhancement
