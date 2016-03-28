@@ -1,5 +1,9 @@
 # Changelog
 
+## v.1.0.0
+
+🎉🎈🎊!
+
 ## v0.9.0
 
 * Enhancement
