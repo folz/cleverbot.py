@@ -1,4 +1,4 @@
-"""Python library allowing interaction with the Cleverbot API."""
+"""An unofficial library to access the Cleverbot API."""
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 from builtins import str  # pylint: disable=redefined-builtin
