@@ -6,8 +6,7 @@ Cleverbot.py
 [![Python Versions](https://img.shields.io/pypi/pyversions/cleverbot.svg?style=flat-square)](https://pypi.python.org/pypi/cleverbot)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/cleverbot.svg?style=flat-square)](https://pypi.python.org/pypi/cleverbot)
 
-A Python wrapper over the Cleverbot API
----------------------------------------
+Cleverbot.py is an unofficial library to access the Cleverbot API.
 
 Comments/pull requests/feedback welcome!
 
