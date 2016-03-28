@@ -15,9 +15,14 @@ entity_parser = parser.HTMLParser()
 
 
 class Cleverbot(object):
-    """
-    Wrapper over the Cleverbot API.
+    """Handles a conversation with Cleverbot.
 
+    Example usage:
+
+       >>> from cleverbot import Cleverbot
+       >>> cb = Cleverbot()
+       >>> cb.ask("Hi. How are you?")
+       "I'm good, thanks. How are you?"
     """
     HOST = "www.cleverbot.com"
     PROTOCOL = "http://"
