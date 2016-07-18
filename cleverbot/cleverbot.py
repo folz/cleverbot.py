@@ -110,7 +110,7 @@ class Cleverbot(object):
         # Add Cleverbot's reply to the conversation log
         self.conversation.append(parsed['answer'])
 
-        return parsed['answer']
+        return parsed['answer'].encode('latin-1').decode('utf-8')
 
     def _send(self):
         """POST the user's question and all required information to the
