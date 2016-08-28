@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.0
+
+* Bugfix
+  * [#33](https://github.com/folz/cleverbot.py/pull/33) - Convert incoming responses from latin-1 to utf-8
+
 ## v.1.0.0
 
 🎉🎈🎊!
