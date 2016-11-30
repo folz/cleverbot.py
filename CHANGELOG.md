@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.1
+
+* Bugfix
+  * [#38](https://github.com/folz/cleverbot.py/pull/38) - Update webservicemin resource URL.
+
 ## v1.1.0
 
 * Bugfix
