@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.0
+
+* Incompatible Changes
+  * `CleverbotAPIException` is renamed to `CleverbotServiceException`.
+
 ## v1.1.1
 
 * Bugfix

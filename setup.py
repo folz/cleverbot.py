@@ -6,7 +6,7 @@ setup(
     url='https://github.com/folz/cleverbot.py',
     author='Rodney Folz',
     author_email='pypi@rodneyfolz.com',
-    description='An unofficial library to access the Cleverbot API',
+    description='An unofficial library to access the Cleverbot service',
     license='BSD-2-Clause',
     packages=['cleverbot'],
     install_requires=['future', 'requests'],

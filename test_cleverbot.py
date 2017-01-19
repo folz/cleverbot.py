@@ -11,7 +11,7 @@ class CleverbotTest(unittest.TestCase):
         cbc = cleverbot.Cleverbot()
         try:
             response = cbc.ask("Hi. How are you?")
-        except cleverbot.CleverbotAPIError:
+        except cleverbot.CleverbotServiceError:
             # Technically, cleverbot errored. But we connected, which is all
             # that matters
             self.assertTrue(True)

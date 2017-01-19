@@ -1,4 +1,4 @@
-"""An unofficial library to access the Cleverbot API."""
+"""An unofficial library to access the Cleverbot service."""
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 from builtins import str  # pylint: disable=redefined-builtin
@@ -27,8 +27,8 @@ class Cleverbot(object):
     """
     HOST = "www.cleverbot.com"
     PROTOCOL = "http://"
-    RESOURCE = "/webservicemin?uc=321&"
-    API_URL = PROTOCOL + HOST + RESOURCE
+    RESOURCE = "/webservicemin?uc=321"
+    SERVICE_URL = PROTOCOL + HOST + RESOURCE
 
     headers = {
         'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)',
@@ -95,7 +95,7 @@ class Cleverbot(object):
         # Set the current question
         self.data['stimulus'] = question
 
-        # Connect to Cleverbot's API and remember the response
+        # Connect to Cleverbot and remember the response
         resp = self._send()
 
         # Add the current question to the conversation log
@@ -114,15 +114,11 @@ class Cleverbot(object):
 
     def _send(self):
         """POST the user's question and all required information to the
-        Cleverbot API
+        Cleverbot service
 
-        Cleverbot tries to prevent unauthorized access to its API by
-        obfuscating how it generates the 'icognocheck' token. The token is
-        currently the md5 checksum of the 10th through 36th characters of the
+        Cleverbot obfuscates how it generates the 'icognocheck' token. The token
+        is currently the md5 checksum of the 10th through 36th characters of the
         encoded data. This may change in the future.
-
-        TODO: Order is not guaranteed when urlencoding dicts. This hasn't been
-        a problem yet, but let's look into ordered dicts or tuples instead.
         """
         # Set data as appropriate
         if self.conversation:
@@ -139,8 +135,8 @@ class Cleverbot(object):
         token = hashlib.md5(digest_txt.encode('utf-8')).hexdigest()
         self.data['icognocheck'] = token
 
-        # POST the data to Cleverbot's API and return
-        return self.session.post(Cleverbot.API_URL,
+        # POST the data to Cleverbot and return
+        return self.session.post(Cleverbot.SERVICE_URL,
                                  data=self.data,
                                  headers=Cleverbot.headers)
 
@@ -154,7 +150,7 @@ class Cleverbot(object):
             ]
 
         if parsed[0][1] == 'DENIED':
-            raise CleverbotAPIError()
+            raise CleverbotServiceError()
 
         parsed_dict = {
             'answer': parsed[0][0],
@@ -167,5 +163,5 @@ class Cleverbot(object):
         return parsed_dict
 
 
-class CleverbotAPIError(Exception):
-    """Cleverbot returned an error (it probably recognized us as a bot)"""
+class CleverbotServiceError(Exception):
+    """The Cleverbot service returned an error"""
