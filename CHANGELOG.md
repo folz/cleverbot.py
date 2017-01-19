@@ -3,6 +3,8 @@
 ## v2.0.0
 
 * Incompatible Changes
+  * Consumers of this library must now pass an identifying string when creating
+    a connection. For more context, see http://www.cleverbot.com/apis.
   * `CleverbotAPIException` is renamed to `CleverbotServiceException`.
 
 ## v1.1.1

@@ -21,29 +21,50 @@ class Cleverbot(object):
     Example usage:
 
        >>> from cleverbot import Cleverbot
-       >>> cb = Cleverbot()
+       >>> cb = Cleverbot('my-example-bot')
        >>> cb.ask("Hi. How are you?")
        "I'm good, thanks. How are you?"
     """
+
     HOST = "www.cleverbot.com"
     PROTOCOL = "http://"
-    RESOURCE = "/webservicemin?uc=321"
-    SERVICE_URL = PROTOCOL + HOST + RESOURCE
+    RESOURCE = "/webservicemin"
 
-    headers = {
-        'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)',
-        'Accept': 'text/html,application/xhtml+xml,'
-                  'application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-        'Accept-Language': 'en-us,en;q=0.8,en-us;q=0.5,en;q=0.3',
-        'Cache-Control': 'no-cache',
-        'Host': HOST,
-        'Referer': PROTOCOL + HOST + '/',
-        'Pragma': 'no-cache'
-    }
+    def __init__(self, botapi, uc='3210'):
+        """Cleverbot requests that bots identify themselves when
+        connecting to the service. You must pass an identifying string
+        for your bot when you create the connection.
 
-    def __init__(self):
-        """ The data that will get passed to Cleverbot's web API """
+        For example:
+
+        >> cb = Cleverbot('my-app')
+
+        and *not*:
+
+        >> cb = Cleverbot()
+
+        See: http://www.cleverbot.com/apis
+        """
+
+        self.botapi = botapi
+        self.uc = uc
+
+        self.SERVICE_URL = self.PROTOCOL + self.HOST + self.RESOURCE + \
+                           "?uc=" + self.uc + "&botapi=" + self.botapi
+
+        self.headers = {
+            'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)',
+            'Accept': 'text/html,application/xhtml+xml,'
+                      'application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+            'Accept-Language': 'en-us,en;q=0.8,en-us;q=0.5,en;q=0.3',
+            'Cache-Control': 'no-cache',
+            'Host': self.HOST,
+            'Referer': self.PROTOCOL + self.HOST + '/',
+            'Pragma': 'no-cache'
+        }
+
+        """ The data that will get passed to Cleverbot """
         self.data = collections.OrderedDict(
             (
                 # must be the first pairs
@@ -136,9 +157,9 @@ class Cleverbot(object):
         self.data['icognocheck'] = token
 
         # POST the data to Cleverbot and return
-        return self.session.post(Cleverbot.SERVICE_URL,
+        return self.session.post(self.SERVICE_URL,
                                  data=self.data,
-                                 headers=Cleverbot.headers)
+                                 headers=self.headers)
 
     @staticmethod
     def _parse(resp_text):

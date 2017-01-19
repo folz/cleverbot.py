@@ -3,16 +3,16 @@ from __future__ import print_function
 from builtins import input
 import traceback
 
-import cleverbot
+from cleverbot import Cleverbot
 
 
 def main():
     # instantiate a Cleverbot object
-    cleverbot_client = cleverbot.Cleverbot()
+    client = Cleverbot('cleverbot-py-example')
 
     while True:
         question = input('>> You: ')
-        answer = cleverbot_client.ask(question)
+        answer = client.ask(question)
         print('>> Cleverbot: {}'.format(answer))
 
 

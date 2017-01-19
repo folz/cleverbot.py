@@ -2,22 +2,22 @@
 from __future__ import print_function
 import traceback
 
-import cleverbot
+from cleverbot import Cleverbot
 
 
 def main():
-    # instantiate two Cleverbot objects
-    cleverbot_client_one = cleverbot.Cleverbot()
-    cleverbot_client_two = cleverbot.Cleverbot()
+    # Create two Cleverbot connections
+    alice = Cleverbot('cleverbot-py-example')
+    bob = Cleverbot('cleverbot-py-example')
 
-    print('>> Cleverbot #1: Hi.')
-    answer = cleverbot_client_two.ask('Hi.')
+    print('>> Alice: Hi.')
+    answer = bob.ask('Hi.')
 
     while True:
-        print('>> Cleverbot #2: {}'.format(answer))
-        answer = cleverbot_client_one.ask(answer)
-        print('>> Cleverbot #1: {}'.format(answer))
-        answer = cleverbot_client_two.ask(answer)
+        print('>> Bob: {}'.format(answer))
+        answer = alice.ask(answer)
+        print('>> Alice: {}'.format(answer))
+        answer = bob.ask(answer)
 
 
 if __name__ == '__main__':

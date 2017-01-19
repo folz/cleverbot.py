@@ -5,7 +5,7 @@ Cleverbot.py is an unofficial library to access the Cleverbot service.
 ```python
 >>> from cleverbot import Cleverbot
 
->>> cb = Cleverbot()
+>>> cb = Cleverbot('my-app')
 >>> cb.ask("Hi. How are you?")
 "I'm good, thanks. How are you?"
 ```
