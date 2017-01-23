@@ -8,7 +8,7 @@ import cleverbot
 
 class CleverbotTest(unittest.TestCase):
     def test_replay(self):
-        cbc = cleverbot.Cleverbot()
+        cbc = cleverbot.Cleverbot("cleverbot-py-test")
         try:
             response = cbc.ask("Hi. How are you?")
         except cleverbot.CleverbotServiceError:
